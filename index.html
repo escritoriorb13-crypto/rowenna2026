@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Ficha de Demanda — Rowenna 2026</title>
+<style>
+  :root {
+    --red: #CC1914; --reddk: #9E1210; --yel: #FFD600;
+    --blu: #003DA5; --blk: #1A1A1A; --grn: #1B7A3E;
+    --wht: #fff; --gry1: #F5F5F5; --gry2: #E0E0E0;
+    --org: #E07B00;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Arial, sans-serif; background: var(--gry1); color: var(--blk); font-size: 14px; }
+
+  header {
+    background: var(--red); color: var(--wht); padding: 16px;
+    text-align: center; position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,.3);
+  }
+  header h1 { font-size: 16px; font-weight: bold; }
+  header p { font-size: 11px; opacity: .85; margin-top: 2px; }
+
+  .form-wrap { max-width: 600px; margin: 0 auto; padding: 12px; }
+
+  .bloco {
+    background: var(--wht); border-radius: 8px; margin-bottom: 12px;
+    overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,.1);
+  }
+  .bloco-titulo {
+    padding: 8px 14px; font-size: 11px; font-weight: bold;
+    letter-spacing: .5px; color: var(--wht);
+  }
+  .bloco-b1 .bloco-titulo { background: var(--blu); }
+  .bloco-b2 .bloco-titulo { background: #6B2FAE; }
+  .bloco-b3 .bloco-titulo { background: #1B5E20; }
+  .bloco-b4 .bloco-titulo { background: var(--reddk); }
+  .bloco-b5 .bloco-titulo { background: #37474F; }
+
+  .bloco-body { padding: 12px 14px; display: flex; flex-direction: column; gap: 10px; }
+
+  .field { display: flex; flex-direction: column; gap: 4px; }
+  .field label { font-size: 12px; font-weight: bold; color: #555; }
+  .field label span { color: var(--red); }
+  .field input, .field select, .field textarea {
+    border: 1.5px solid var(--gry2); border-radius: 6px; padding: 8px 10px;
+    font-size: 14px; font-family: Arial; color: var(--blk);
+    background: var(--gry1); transition: border .2s;
+    -webkit-appearance: none; appearance: none;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    outline: none; border-color: var(--blu); background: var(--wht);
+  }
+  .field textarea { min-height: 70px; resize: vertical; }
+  .field select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M0 0l6 8 6-8z' fill='%23555'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; padding-right: 28px; }
+
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+  .score-box {
+    background: var(--gry1); border: 2px solid var(--gry2); border-radius: 8px;
+    padding: 10px 14px; text-align: center; margin-top: 4px;
+  }
+  .score-box .score-val { font-size: 36px; font-weight: bold; color: var(--red); line-height: 1; }
+  .score-box .score-label { font-size: 11px; color: #777; margin-top: 2px; }
+  .score-box .score-tier { font-size: 13px; font-weight: bold; margin-top: 4px; }
+
+  .btn-submit {
+    width: 100%; padding: 14px; background: var(--red); color: var(--wht);
+    font-size: 16px; font-weight: bold; border: none; border-radius: 8px;
+    cursor: pointer; margin: 8px 0; letter-spacing: .5px;
+    box-shadow: 0 3px 8px rgba(204,25,20,.3);
+  }
+  .btn-submit:active { background: var(--reddk); }
+
+  /* Resultado */
+  #resultado { display: none; }
+  .result-card {
+    background: var(--wht); border-radius: 8px; margin-bottom: 12px;
+    overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,.15);
+  }
+  .result-header {
+    background: var(--grn); color: var(--wht); padding: 10px 14px;
+    font-weight: bold; font-size: 13px; display: flex; align-items: center; gap: 8px;
+  }
+  .result-body { padding: 12px 14px; }
+
+  .copy-btn {
+    width: 100%; padding: 10px; margin-top: 8px;
+    background: var(--blu); color: var(--wht); border: none;
+    border-radius: 6px; font-size: 13px; font-weight: bold; cursor: pointer;
+  }
+  .copy-btn:active { background: #002a80; }
+  .copy-btn.copied { background: var(--grn); }
+
+  pre {
+    background: var(--gry1); border-radius: 6px; padding: 10px;
+    font-size: 11px; white-space: pre-wrap; word-break: break-word;
+    font-family: monospace; max-height: 200px; overflow-y: auto;
+    border: 1px solid var(--gry2);
+  }
+
+  .zap-msg {
+    background: #E8F5E9; border-left: 4px solid var(--grn);
+    border-radius: 0 6px 6px 0; padding: 10px;
+    font-size: 12px; white-space: pre-wrap; line-height: 1.6;
+  }
+
+  .btn-nova { width:100%; padding:12px; background:var(--yel); color:var(--blk); font-weight:bold; border:none; border-radius:8px; cursor:pointer; font-size:14px; margin-top:4px; }
+  .required-note { font-size: 11px; color: #888; text-align: center; margin-bottom: 8px; }
+
+  .prio-badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: bold; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📋 Ficha de Demanda — Rowenna 2026</h1>
+  <p>Preencha os campos e gere o registro pronto pra planilha</p>
+</header>
+
+<div class="form-wrap">
+<form id="form">
+  <p class="required-note"><span style="color:var(--red)">*</span> Campos obrigatórios</p>
+
+  <!-- BLOCO 1: IDENTIFICAÇÃO -->
+  <div class="bloco bloco-b1">
+    <div class="bloco-titulo">📌 BLOCO 1 — IDENTIFICAÇÃO</div>
+    <div class="bloco-body">
+      <div class="row2">
+        <div class="field">
+          <label>Quem está registrando? <span>*</span></label>
+          <select id="responsavel">
+            <option value="">— selecionar —</option>
+            <option>ROWENNA</option><option>JOJO</option><option>SANDRA</option>
+            <option>CAIO</option><option>EDSON</option><option>UELEN</option>
+            <option>JULIA</option><option>RAINER</option><option>BETO</option>
+            <option>FERNANDA</option><option>JEANE</option><option>DEA</option>
+            <option>TAIRONE</option><option>EQUIPE</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Canal de chegada <span>*</span></label>
+          <select id="canal">
+            <option value="">— selecionar —</option>
+            <option>Candidata diretamente</option>
+            <option>WhatsApp</option>
+            <option>Evento / presencial</option>
+            <option>Ligação</option>
+            <option>Liderança intermediária</option>
+            <option>Redes sociais</option>
+            <option>E-mail</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label>Tipo de demanda <span>*</span></label>
+        <select id="tipo">
+          <option value="">— selecionar —</option>
+          <option>Institucional</option><option>Territorial</option>
+          <option>Material</option><option>Simbólica</option>
+          <option>Programática</option><option>Agenda / visita</option>
+          <option>Apoio político</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Categoria / Pauta Temática <span>*</span>
+          <span style="font-weight:normal;color:#888;font-size:11px;"> — alinhado à tabela geral</span>
+        </label>
+        <select id="categoria">
+          <option value="">— selecionar —</option>
+          <optgroup label="🎓 Educação">
+            <option>Educação Básica / Escola</option>
+            <option>CETEP / Educação Profissional</option>
+            <option>APLB / Magistério / Sindicato</option>
+            <option>Gestão Escolar / Direção</option>
+          </optgroup>
+          <optgroup label="👩‍💼 Identidade e Direitos">
+            <option>Mulheres / Gênero / Feminismo</option>
+            <option>Juventude / Primeiro Voto</option>
+            <option>Comunidade Quilombola / Raça</option>
+            <option>Periferia / Comunidade</option>
+            <option>LGBTQIA+</option>
+          </optgroup>
+          <optgroup label="🌵 Território e Clima">
+            <option>Semiárido / Caatinga / Clima</option>
+            <option>Agricultura Familiar / Assentamento</option>
+            <option>Infraestrutura / Obras</option>
+            <option>Habitação / Moradia</option>
+          </optgroup>
+          <optgroup label="🤝 Política e Organização">
+            <option>Coligação / Apoio Político</option>
+            <option>Agenda / Visita / Evento</option>
+            <option>Mobilização Eleitoral</option>
+            <option>Articulação Interinstitucional</option>
+          </optgroup>
+          <optgroup label="✨ Oportunidade">
+            <option>Oportunidade</option>
+          </optgroup>
+          <optgroup label="🏥 Saúde">
+            <option>Saúde Pública</option>
+          </optgroup>
+          <optgroup label="🏫 Escola">
+            <option>Situações em Escola</option>
+            <option>Processo Funcional</option>
+          </optgroup>
+          <optgroup label="🎨 Outros">
+            <option>Cultura / Arte</option>
+            <option>Segurança Pública</option>
+            <option>Outra categoria</option>
+          </optgroup>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOCO 2: TERRITORIAL -->
+  <div class="bloco bloco-b2">
+    <div class="bloco-titulo">📍 BLOCO 2 — ORIGEM TERRITORIAL</div>
+    <div class="bloco-body">
+      <div class="field">
+        <label>Município <span>*</span></label>
+        <input type="text" id="municipio" placeholder="Ex: Senhor do Bonfim">
+      </div>
+      <div class="field">
+        <label>Território de Identidade <span>*</span></label>
+        <select id="territorio">
+          <option value="">— selecionar —</option>
+          <option>METROPOLITANO DE SALVADOR</option>
+          <option>PORTAL DO SERTAO</option>
+          <option>MEDIO RIO DE CONTAS</option>
+          <option>SISAL</option>
+          <option>ITAPARICA</option>
+          <option>VELHO CHICO</option>
+          <option>LITORAL NORTE AGRESTE BAIANO</option>
+          <option>BACIA DO JACUIPE</option>
+          <option>BAIXO SUL</option>
+          <option>CHAPADA DIAMANTINA</option>
+          <option>PIEMONTE DE DIAMANTINA II</option>
+          <option>MEDIO SUDOESTE DA BAHIA</option>
+          <option>VALE DO JIQUIRICA</option>
+          <option>SUDOESTE BAIANO</option>
+          <option>SERTAO PRODUTIVO</option>
+          <option>COSTA DO DESCOBRIMENTO</option>
+          <option>EXTREMO SUL</option>
+          <option>LITORAL SUL</option>
+          <option>PIEMONTE NORTE DO ITAPICURU</option>
+          <option>IRECE</option>
+          <option>RECONCAVO</option>
+          <option>SERTAO DO SAO FRANCISCO</option>
+          <option>SEMIARIDO NORDESTE II</option>
+          <option>BACIA DO RIO GRANDE</option>
+          <option>PIEMONTE DO PARAGUACU</option>
+          <option>BACIA DO RIO CORRENTE</option>
+          <option>BACIA DO PARAMIRIM</option>
+        </select>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label>Tipo do território</label>
+          <select id="tipo_terr">
+            <option value="">— opcional —</option>
+            <option>Fortaleza</option><option>Médio</option>
+            <option>Expansão</option><option>Descarte</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Liderança que trouxe</label>
+          <input type="text" id="lideranca" placeholder="Nome da liderança">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOCO 3: DESCRIÇÃO -->
+  <div class="bloco bloco-b3">
+    <div class="bloco-titulo">📝 BLOCO 3 — DESCRIÇÃO</div>
+    <div class="bloco-body">
+      <div class="field">
+        <label>Descrição da demanda <span>*</span></label>
+        <textarea id="descricao" placeholder="Descreva o que está sendo pedido, por quem e em que contexto..."></textarea>
+      </div>
+      <div class="field">
+        <label>Objetivo político / eleitoral</label>
+        <textarea id="objetivo" placeholder="O que essa demanda representa eleitoralmente? Que base ativa?" style="min-height:50px"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOCO 4: CLASSIFICAÇÃO -->
+  <div class="bloco bloco-b4">
+    <div class="bloco-titulo">⭐ BLOCO 4 — CLASSIFICAÇÃO (define o SCORE)</div>
+    <div class="bloco-body">
+      <div class="row2">
+        <div class="field">
+          <label>Urgência <span>*</span></label>
+          <select id="urgencia" onchange="calcScore()">
+            <option value="">—</option>
+            <option value="Alta">Alta (até 7 dias)</option>
+            <option value="Média">Média (até 30 dias)</option>
+            <option value="Baixa">Baixa</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Potencial de mobilização <span>*</span></label>
+          <select id="mob" onchange="calcScore()">
+            <option value="">—</option>
+            <option value="Alto">Alto (grupo grande)</option>
+            <option value="Médio">Médio</option>
+            <option value="Baixo">Baixo (individual)</option>
+          </select>
+        </div>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label>Impacto político <span>*</span></label>
+          <select id="impacto" onchange="calcScore()">
+            <option value="">—</option>
+            <option value="Alto">Alto</option>
+            <option value="Médio">Médio</option>
+            <option value="Baixo">Baixo</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Alinhamento com Rowenna <span>*</span></label>
+          <select id="alinhamento" onchange="calcScore()">
+            <option value="">—</option>
+            <option value="Alto">Alto</option>
+            <option value="Médio">Médio</option>
+            <option value="Baixo">Baixo</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label>Viabilidade de atendimento <span style="font-size:10px;color:#999;font-weight:normal;">(opcional)</span></label>
+        <select id="viabilidade" onchange="calcScore()">
+          <option value="">—</option>
+          <option value="Alta">Alta (fácil de executar)</option>
+          <option value="Média">Média</option>
+          <option value="Baixa">Baixa (cara ou complexa)</option>
+        </select>
+      </div>
+
+      <div class="score-box" id="score-preview">
+        <div class="score-val" id="score-num">—</div>
+        <div class="score-label">SCORE PARCIAL (sem territorial) | máx 36</div>
+        <div class="score-tier" id="score-tier"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOCO 5: CONTEXTO -->
+  <div class="bloco bloco-b5">
+    <div class="bloco-titulo">💬 BLOCO 5 — CONTEXTO E OBSERVAÇÕES</div>
+    <div class="bloco-body">
+      <div class="field">
+        <label>Interseccionalidade / perfil de quem demanda</label>
+        <select id="perfil">
+          <option value="">— opcional —</option>
+          <option>Mulher / movimento feminista</option>
+          <option>Juventude (16-29 anos)</option>
+          <option>Magistério / APLB</option>
+          <option>Comunidade quilombola</option>
+          <option>Liderança sindical</option>
+          <option>Liderança religiosa progressista</option>
+          <option>Liderança política local</option>
+          <option>Comunidade periférica</option>
+          <option>Semiárido / agricultores</option>
+          <option>Outro</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Contrapartida esperada da liderança</label>
+        <input type="text" id="contrapartida" placeholder="Ex: votos, divulgação, presença em evento...">
+      </div>
+      <div class="field">
+        <label>Observações / riscos</label>
+        <textarea id="obs" placeholder="Algo que a campanha precisa saber antes de decidir..." style="min-height:50px"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOCO ANEXO -->
+  <div class="bloco" style="border:2px dashed #CCCCCC;">
+    <div class="bloco-titulo" style="background:#455A64;">📎 BLOCO 6 — ANEXOS (opcional)</div>
+    <div class="bloco-body">
+      <div class="field">
+        <label>Documentos, prints, fotos ou áudios relacionados à demanda</label>
+        <div id="drop-area" onclick="document.getElementById('anexos').click()"
+          style="border:2px dashed #BBBBBB;border-radius:8px;padding:20px;text-align:center;cursor:pointer;background:#FAFAFA;transition:background .2s;">
+          <div style="font-size:28px;margin-bottom:6px;">📂</div>
+          <div style="font-size:13px;color:#555;">Clique para selecionar arquivos</div>
+          <div style="font-size:11px;color:#999;margin-top:4px;">Fotos, PDFs, prints, áudios — qualquer formato</div>
+        </div>
+        <input type="file" id="anexos" multiple accept="*/*"
+          style="display:none" onchange="mostrarAnexos(this)">
+      </div>
+      <div id="lista-anexos" style="display:none;">
+        <div style="font-size:12px;font-weight:bold;color:#455A64;margin-bottom:6px;">Arquivos selecionados:</div>
+        <div id="arquivos-lista" style="display:flex;flex-direction:column;gap:6px;"></div>
+        <div id="preview-imgs" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;"></div>
+        <p style="font-size:11px;color:#888;margin-top:8px;font-style:italic;">⚠️ Os arquivos ficam salvos <strong>no seu dispositivo</strong>. A mensagem gerada incluirá os nomes — envie os arquivos junto no WhatsApp.</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="aviso-erro" style="display:none;background:#FFEBEE;border:2px solid #CC1914;border-radius:8px;padding:14px 16px;margin-bottom:12px;font-size:13px;color:#CC1914;font-weight:bold;">⚠️ Preencha todos os campos marcados em vermelho antes de gerar a ficha.</div>
+<button type="button" class="btn-submit" onclick="processar()">✅ GERAR FICHA PRONTA</button>
+</form>
+
+<!-- RESULTADO -->
+<div id="resultado" style="display:none;">
+<div id="status-envio" style="display:none;"></div>
+  <div class="result-card">
+    <div class="result-header">✅ Ficha gerada com sucesso!</div>
+    <div class="result-body">
+      <p style="font-size:12px;color:#555;margin-bottom:8px;">Linha formatada para colar na aba DEMANDAS da planilha (separado por tabulação):</p>
+      <pre id="linha-planilha"></pre>
+      <button class="copy-btn" onclick="copiar('linha-planilha', this)">📋 Copiar linha para a planilha</button>
+    </div>
+  </div>
+
+  <div class="result-card" id="card-anexos" style="display:none;">
+    <div class="result-header" style="background:#455A64;">📎 Anexos para enviar junto</div>
+    <div class="result-body">
+      <p style="font-size:12px;color:#555;margin-bottom:10px;">Envie esses arquivos logo após a mensagem no WhatsApp:</p>
+      <div id="result-lista-anexos"></div>
+      <div id="result-preview-imgs" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;"></div>
+    </div>
+  </div>
+
+  <div class="result-card">
+    <div class="result-header" style="background:var(--grn)">📱 Mensagem para o WhatsApp da campanha</div>
+    <div class="result-body">
+      <div class="zap-msg" id="msg-zap"></div>
+      <button class="copy-btn" onclick="copiarZap()">📋 Copiar mensagem WhatsApp</button>
+    </div>
+  </div>
+
+  <button class="btn-nova" onclick="novaDemanda()">+ Registrar nova demanda</button>
+</div>
+
+</div><!-- /form-wrap -->
+
+<script>
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxFduJmCjo61jjuKNZlVH8sxNfP-Px2AtJ92Wp5sxCGc3X8uHTcQ02kaDqI6GcOkfC-/exec';
+
+const PRIO = {
+  "METROPOLITANO DE SALVADOR":5,"PORTAL DO SERTAO":4,"MEDIO RIO DE CONTAS":4,
+  "SISAL":4,"ITAPARICA":4,"VELHO CHICO":4,"LITORAL NORTE AGRESTE BAIANO":3,
+  "BACIA DO JACUIPE":3,"BAIXO SUL":3,"CHAPADA DIAMANTINA":3,
+  "PIEMONTE DE DIAMANTINA II":3,"MEDIO SUDOESTE DA BAHIA":3,
+  "VALE DO JIQUIRICA":2,"SUDOESTE BAIANO":2,"SERTAO PRODUTIVO":2,
+  "COSTA DO DESCOBRIMENTO":2,"EXTREMO SUL":2,"LITORAL SUL":2,
+  "PIEMONTE NORTE DO ITAPICURU":1,"IRECE":1,"RECONCAVO":1,
+  "SERTAO DO SAO FRANCISCO":1,"SEMIARIDO NORDESTE II":1,
+  "BACIA DO RIO GRANDE":1,"PIEMONTE DO PARAGUACU":1,
+  "BACIA DO RIO CORRENTE":1,"BACIA DO PARAMIRIM":1
+};
+
+const META = {
+  "METROPOLITANO DE SALVADOR":26825,"PORTAL DO SERTAO":3535,"MEDIO RIO DE CONTAS":3285,
+  "SISAL":3270,"ITAPARICA":3235,"VELHO CHICO":3145,"LITORAL NORTE AGRESTE BAIANO":2530,
+  "BACIA DO JACUIPE":2325,"BAIXO SUL":2310,"CHAPADA DIAMANTINA":2250,
+  "PIEMONTE DE DIAMANTINA II":2230,"MEDIO SUDOESTE DA BAHIA":2065,
+  "VALE DO JIQUIRICA":1795,"SUDOESTE BAIANO":1795,"SERTAO PRODUTIVO":1775,
+  "COSTA DO DESCOBRIMENTO":1765,"EXTREMO SUL":1675,"LITORAL SUL":1665,
+  "PIEMONTE NORTE DO ITAPICURU":1615,"IRECE":1600,"RECONCAVO":1435,
+  "SERTAO DO SAO FRANCISCO":1350,"SEMIARIDO NORDESTE II":1175,
+  "BACIA DO RIO GRANDE":1035,"PIEMONTE DO PARAGUACU":730,
+  "BACIA DO RIO CORRENTE":375,"BACIA DO PARAMIRIM":120
+};
+
+const PRIO_LABEL = {5:"★★★★★ MÁXIMA",4:"★★★★☆ ALTA",3:"★★★☆☆ MÉDIA",2:"★★☆☆☆ BAIXA",1:"★☆☆☆☆ MÍNIMA"};
+
+let arquivosAnexados = [];
+
+function mostrarAnexos(input) {
+  arquivosAnexados = Array.from(input.files);
+  const lista = document.getElementById('arquivos-lista');
+  const prev = document.getElementById('preview-imgs');
+  lista.innerHTML = '';
+  prev.innerHTML = '';
+  arquivosAnexados.forEach(f => {
+    const item = document.createElement('div');
+    item.style.cssText = 'display:flex;align-items:center;gap:8px;font-size:12px;background:#F5F5F5;border-radius:6px;padding:6px 10px;margin-bottom:4px;';
+    item.innerHTML = '<span style="font-size:16px">📎</span><span>' + f.name + '</span><span style="color:#999;margin-left:auto">' + (f.size/1024).toFixed(0) + 'KB</span>';
+    lista.appendChild(item);
+    if(f.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = document.createElement('img');
+        img.src = e.target.result;
+        img.style.cssText = 'width:80px;height:80px;object-fit:cover;border-radius:6px;border:1px solid #ddd;margin:4px;';
+        prev.appendChild(img);
+      };
+      reader.readAsDataURL(f);
+    }
+  });
+  document.getElementById('lista-anexos').style.display = arquivosAnexados.length ? 'block' : 'none';
+}
+
+function v(sel,a,b,c) { return sel===a?3:sel===b?2:sel===c?1:0; }
+
+function calcScore() {
+  const urg = document.getElementById('urgencia').value;
+  const mob = document.getElementById('mob').value;
+  const imp = document.getElementById('impacto').value;
+  const ali = document.getElementById('alinhamento').value;
+  const via = document.getElementById('viabilidade').value;
+  if(!urg||!mob||!imp||!ali) return;
+  const terr = document.getElementById('territorio').value;
+  const prio_num = PRIO[terr] || 0;
+  const s = v(urg,'Alta','Média','Baixa')*2
+           +v(mob,'Alto','Médio','Baixo')*4
+           +v(imp,'Alto','Médio','Baixo')*3
+           +v(ali,'Alto','Médio','Baixo')*2
+           +(via?v(via,'Alta','Média','Baixa')*1:0)
+           +prio_num*3;
+  const el = document.getElementById('score-num');
+  const tier = document.getElementById('score-tier');
+  el.textContent = s;
+  if(s>=35){ tier.textContent='🔴 ALTA PRIORIDADE'; tier.style.color='#CC1914'; }
+  else if(s>=18){ tier.textContent='🟠 MÉDIA PRIORIDADE'; tier.style.color='#E07B00'; }
+  else { tier.textContent='🟢 BAIXA PRIORIDADE'; tier.style.color='#1B7A3E'; }
+}
+
+function processar() {
+  const resp = document.getElementById('responsavel').value;
+  const canal = document.getElementById('canal').value;
+  const tipo = document.getElementById('tipo').value;
+  const cat = document.getElementById('categoria').value;
+  const mun = document.getElementById('municipio').value.trim();
+  const terr = document.getElementById('territorio').value;
+  const dem = document.getElementById('descricao').value.trim();
+  const urg = document.getElementById('urgencia').value;
+  const mob = document.getElementById('mob').value;
+  const imp = document.getElementById('impacto').value;
+  const ali = document.getElementById('alinhamento').value;
+  const via = document.getElementById('viabilidade').value;
+
+  // Validação visual
+  const campos = [
+    {id:'responsavel',val:resp},{id:'canal',val:canal},{id:'tipo',val:tipo},
+    {id:'categoria',val:cat},{id:'municipio',val:mun},{id:'territorio',val:terr},
+    {id:'descricao',val:dem},{id:'urgencia',val:urg},{id:'mob',val:mob},
+    {id:'impacto',val:imp},{id:'alinhamento',val:ali}
+  ];
+  let temVazio = false;
+  campos.forEach(function(c) {
+    const el = document.getElementById(c.id);
+    if(!c.val) { el.style.border='2px solid #CC1914'; temVazio=true; }
+    else { el.style.border=''; }
+  });
+  if(temVazio) {
+    const aviso = document.getElementById('aviso-erro');
+    aviso.style.display='block';
+    aviso.scrollIntoView({behavior:'smooth',block:'center'});
+    return;
+  }
+  document.getElementById('aviso-erro').style.display='none';
+
+  const lideranca = document.getElementById('lideranca').value.trim() || '—';
+  const tipo_terr = document.getElementById('tipo_terr').value || '—';
+  const perfil = document.getElementById('perfil').value || '—';
+  const contrapartida = document.getElementById('contrapartida').value.trim() || '';
+  const obs = document.getElementById('obs').value.trim() || '';
+
+  // Score
+  const sc_base = v(urg,'Alta','Média','Baixa')*2
+                 +v(mob,'Alto','Médio','Baixo')*4
+                 +v(imp,'Alto','Médio','Baixo')*3
+                 +v(ali,'Alto','Médio','Baixo')*2
+                 +(via ? v(via,'Alta','Média','Baixa')*1 : 0);
+  const prio_num = PRIO[terr] || 0;
+  const sc_total = sc_base + prio_num*3;
+  const prio_label = PRIO_LABEL[prio_num] || '—';
+  const meta_votos = META[terr] || '—';
+
+  let score_tier;
+  if(sc_total>=35) score_tier='🔴 ALTA';
+  else if(sc_total>=18) score_tier='🟠 MÉDIA';
+  else score_tier='🟢 BAIXA';
+
+  // ID e data
+  const id = 'D-' + (50000 + Math.floor(Math.random()*9999));
+  const hoje = new Date();
+  const dia = String(hoje.getDate()).padStart(2,'0');
+  const mes = String(hoje.getMonth()+1).padStart(2,'0');
+  const ano = hoje.getFullYear();
+  const dataFmt = dia+'/'+mes+'/'+ano;
+  const dataISO = ano+'-'+mes+'-'+dia;
+
+  // Anexos
+  const nAnexos = arquivosAnexados.length;
+  let anexosTxt = '';
+  if(nAnexos>0) {
+    anexosTxt = '\n📎 *Anexos (' + nAnexos + '):*';
+    arquivosAnexados.forEach(function(f) { anexosTxt += '\n  📎 ' + f.name; });
+  }
+  const obsTxt = obs ? '\n⚠️ *Obs:* ' + obs : '';
+  const cpTxt = contrapartida ? '\n🤝 *Contrapartida:* ' + contrapartida : '';
+
+  // Mensagem WhatsApp
+  const msg = '📋 *NOVA DEMANDA — CAMPANHA ROWENNA 2026*\n'
+    + '━━━━━━━━━━━━━━━━━━\n'
+    + '🆔 *ID:* ' + id + '\n'
+    + '📅 *Data:* ' + dataFmt + '\n'
+    + '👤 *Registrado por:* ' + resp + '\n'
+    + '📲 *Canal:* ' + canal + '\n'
+    + '📍 *Território:* ' + terr + '\n'
+    + '🏙 *Município:* ' + mun + '\n'
+    + '👥 *Liderança:* ' + lideranca + '\n'
+    + '📝 *Demanda:* ' + dem + '\n'
+    + '⚡ *Urgência:* ' + urg + '\n'
+    + '🗳 *Mobilização:* ' + mob + '\n'
+    + '🎯 *Impacto:* ' + imp + '\n'
+    + '✅ *Alinhamento:* ' + ali + '\n'
+    + '🔧 *Viabilidade:* ' + via + '\n'
+    + '🗺 *Prio. Territorial:* ' + prio_label + '\n'
+    + '⭐ *SCORE TOTAL: ' + sc_total + '/51 — ' + score_tier + '*'
+    + obsTxt + cpTxt + (nAnexos>0?anexosTxt:'') + '\n'
+    + '━━━━━━━━━━━━━━━━━━\n'
+    + '_Registrar na planilha: aba DEMANDAS_'
+    + (nAnexos>0?'\n_⚠️ Enviar os arquivos junto nesta conversa_':'');
+
+  document.getElementById('msg-zap').textContent = msg;
+  document.getElementById('msg-zap').setAttribute('data-msg', msg);
+
+  // Linha planilha TSV
+  const urg_n = v(urg,'Alta','Média','Baixa')===3?5:v(urg,'Alta','Média','Baixa')===2?3:1;
+  const mob_n = v(mob,'Alto','Médio','Baixo')===3?5:v(mob,'Alto','Médio','Baixo')===2?3:1;
+  const imp_n = v(imp,'Alto','Médio','Baixo')===3?5:v(imp,'Alto','Médio','Baixo')===2?3:1;
+  const ali_n = v(ali,'Alto','Médio','Baixo')===3?5:v(ali,'Alto','Médio','Baixo')===2?3:1;
+  const via_n = via ? (v(via,'Alta','Média','Baixa')===3?5:v(via,'Alta','Média','Baixa')===2?3:1) : 0;
+
+  const cols = [id,dataISO,canal,tipo,mun,terr,tipo_terr,lideranca,dem,'',
+    urg_n,mob_n,imp_n,ali_n,via_n,prio_num,meta_votos,sc_total,
+    '','','','','','','',resp,'Nova',dataISO,'','','','','','','',''];
+  document.getElementById('linha-planilha').textContent = cols.join('\t');
+
+  // Anexos visuais no resultado
+  const cardAnexos = document.getElementById('card-anexos');
+  if(nAnexos>0) {
+    cardAnexos.style.display='block';
+    const listaRes = document.getElementById('result-lista-anexos');
+    listaRes.innerHTML='';
+    arquivosAnexados.forEach(function(f) {
+      const item = document.createElement('div');
+      item.style.cssText='display:flex;align-items:center;gap:8px;font-size:12px;background:#F5F5F5;border-radius:6px;padding:8px 12px;margin-bottom:6px;';
+      item.innerHTML='<span style="font-size:16px">📎</span><strong>'+f.name+'</strong><span style="color:#999;margin-left:auto">'+(f.size/1024).toFixed(0)+'KB</span>';
+      listaRes.appendChild(item);
+    });
+  } else { cardAnexos.style.display='none'; }
+
+  // Mostra resultado
+  document.getElementById('form').style.display='none';
+  const resDiv = document.getElementById('resultado');
+  resDiv.style.display='block';
+  // Mobile-safe scroll
+  setTimeout(function(){
+    resDiv.scrollIntoView({behavior:'smooth', block:'start'});
+    window.scrollTo(0,0);
+  }, 50);
+
+  // Envia para Google Sheets — separado para não bloquear a tela no Safari iOS
+  setTimeout(function() {
+    try {
+      var statusEl = document.getElementById('status-envio');
+      statusEl.style.cssText='display:block;background:#FFF8E1;color:#E07B00;border-radius:8px;padding:12px 16px;margin-bottom:12px;font-size:13px;font-weight:bold;border:1px solid #F0C040;';
+      statusEl.innerHTML='⏳ Enviando para a planilha...';
+
+      var payload = {
+        id:id, dataEntrada:dataISO, canal:canal, tipo:tipo,
+        municipio:mun, territorio:terr, tipoTerritorio:tipo_terr,
+        lideranca:lideranca, descricao:dem, objetivoPolitico:'',
+        urgencia:urg_n, mobilizacao:mob_n, impacto:imp_n,
+        alinhamento:ali_n, viabilidade:via_n,
+        prioTerritorial:prio_num, metaVotos:meta_votos,
+        score:sc_total, responsavel:resp, data:dataISO
+      };
+
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', SCRIPT_URL, true);
+      xhr.setRequestHeader('Content-Type', 'text/plain');
+      xhr.onload = function() {
+        statusEl.innerHTML='✅ Dados enviados para a planilha!';
+        statusEl.style.cssText='display:block;background:#E8F5E9;color:#1B7A3E;border-radius:8px;padding:12px 16px;margin-bottom:12px;font-size:13px;font-weight:bold;border:1px solid #A5D6A7;';
+      };
+      xhr.onerror = function() {
+        statusEl.innerHTML='⚠️ Envio automático falhou. Copie a linha abaixo e cole na planilha manualmente.';
+        statusEl.style.cssText='display:block;background:#FFEBEE;color:#CC1914;border-radius:8px;padding:12px 16px;margin-bottom:12px;font-size:13px;font-weight:bold;border:1px solid #FFCDD2;';
+      };
+      xhr.send(JSON.stringify(payload));
+    } catch(e) {
+      // Se falhar silenciosamente, não quebra a tela
+      var statusEl = document.getElementById('status-envio');
+      if(statusEl) {
+        statusEl.innerHTML='⚠️ Envio automático indisponível. Use a linha abaixo para copiar para a planilha.';
+        statusEl.style.cssText='display:block;background:#FFEBEE;color:#CC1914;border-radius:8px;padding:12px 16px;margin-bottom:12px;font-size:13px;font-weight:bold;border:1px solid #FFCDD2;';
+      }
+    }
+  }, 300);
+}
+
+function copiarTexto(text, btn) {
+  // Funciona em mobile (file://) e desktop
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text).then(function() {
+      const orig = btn.textContent;
+      btn.textContent='✅ Copiado!';
+      setTimeout(function(){ btn.textContent=orig; }, 2500);
+    });
+  } else {
+    // Fallback para mobile sem HTTPS
+    const el = document.createElement('textarea');
+    el.value = text;
+    el.style.cssText = 'position:fixed;top:0;left:0;opacity:0;';
+    document.body.appendChild(el);
+    el.focus();
+    el.select();
+    try {
+      document.execCommand('copy');
+      const orig = btn.textContent;
+      btn.textContent='✅ Copiado!';
+      setTimeout(function(){ btn.textContent=orig; }, 2500);
+    } catch(e) {
+      // Se tudo falhar, seleciona o texto para o usuário copiar manualmente
+      el.style.cssText = 'width:100%;height:80px;font-size:12px;';
+      btn.textContent='👆 Selecione e copie';
+    }
+    document.body.removeChild(el);
+  }
+}
+
+function copiar(id, btn) {
+  const text = document.getElementById(id).textContent;
+  copiarTexto(text, btn);
+}
+
+function copiarZap() {
+  const msg = document.getElementById('msg-zap').getAttribute('data-msg')
+            || document.getElementById('msg-zap').textContent;
+  copiarTexto(msg, event.target);
+}
+
+function novaDemanda() {
+  document.getElementById('form').reset();
+  document.getElementById('form').style.display='block';
+  document.getElementById('resultado').style.display='none';
+  document.getElementById('score-num').textContent='—';
+  document.getElementById('score-tier').textContent='';
+  document.getElementById('lista-anexos').style.display='none';
+  arquivosAnexados=[];
+  setTimeout(function(){ window.scrollTo({top:0, behavior:'smooth'}); }, 50);
+}
+</script>
+</body>
+</html>
