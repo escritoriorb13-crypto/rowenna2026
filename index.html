@@ -634,9 +634,33 @@ function processar() {
   const ali_n = v(ali,'Alto','Médio','Baixo')===3?5:v(ali,'Alto','Médio','Baixo')===2?3:1;
   const via_n = via ? (v(via,'Alta','Média','Baixa')===3?5:v(via,'Alta','Média','Baixa')===2?3:1) : 0;
 
-  const cols = [id,dataISO,canal,tipo,mun,terr,tipo_terr,lideranca,dem,'',
-    urg_n,mob_n,imp_n,ali_n,via_n,prio_num,meta_votos,sc_total,
-    '','','','','','','',resp,'Nova',dataISO,'','','','','','','',''];
+  // Colunas A até AL (1 a 38) conforme planilha
+  const cols = [
+    id,          // A1 = ID
+    dataISO,     // B2 = Data Entrada
+    canal,       // C3 = Canal/Origem
+    tipo,        // D4 = Tipo de Demanda
+    mun,         // E5 = Município
+    terr,        // F6 = Território
+    tipo_terr,   // G7 = Tipo Território
+    lideranca,   // H8 = Liderança
+    dem,         // I9 = Descrição
+    '',          // J10 = Objetivo Político
+    urg_n,       // K11 = Urgência
+    mob_n,       // L12 = Pot. Mobilização
+    imp_n,       // M13 = Impacto Político
+    ali_n,       // N14 = Alinhamento
+    via_n,       // O15 = Viabilidade
+    prio_num,    // P16 = Prio. Territorial
+    meta_votos,  // Q17 = Votos Território
+    sc_total,    // R18 = ★ SCORE
+    '','','','','','','','',  // S-Z (19-25) = Decisão, Justif, Agenda...
+    resp,        // Z26 = Responsável
+    'Nova',      // AA27 = Status
+    '',          // AB28 = Prazo
+    dataISO,     // AC29 = Últ. Atualização
+    '','','','','','','',''  // AD-AL (30-38)
+  ];
   document.getElementById('linha-planilha').textContent = cols.join('\t');
 
   // Anexos visuais no resultado
